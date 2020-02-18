@@ -2,3 +2,27 @@
   font-family: sans-serif;
   text-align: center;
 }
+.authorImage {
+  width: 400px;
+}
+.text-muted {
+  text-align: center;
+}
+.turn > div {
+  height: 400px;
+}
+.turn {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.answer {
+  background-color: #f0f7fd;
+  border-color: #d0e3f0;
+  margin-bottom: 20px;
+  padding: 15px 30px 15px 15px;
+  border-left: 5px solid #d0e3f0;
+  cursor: pointer;
+}
+div.answer:hover {
+  background-color: rgb(164, 125, 216);
+}

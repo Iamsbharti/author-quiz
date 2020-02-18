@@ -1,7 +1,47 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import QuizApp from "./QuizApp";
+import authors from "./Data/authors";
+import { shuffle, sample } from "underscore";
 
-import App from "./App";
+function getTurnData(authors) {
+  const allBooks = authors.reduce(function(p, c, i) {
+    return p.concat(c.books);
+  }, []);
 
-const rootElement = document.getElementById("root");
-ReactDOM.render(<App />, rootElement);
+  //Using underscore library to select top 4 random answers.
+  const fourRandomBooks = shuffle(allBooks).slice(0, 4);
+  const answer = sample(fourRandomBooks);
+
+  //Return thr book and authors name as turnData.
+  //Select an author from whose title matches from answer.
+  return {
+    books: fourRandomBooks,
+    author: authors.find(author => author.books.some(title => title === answer))
+  };
+}
+//Intialize the state.
+const state = {
+  turnData: getTurnData(authors),
+  highlight: ""
+};
+
+//This method computes the correct answer upon OncLick Event.
+function onAnswerSelected(title) {
+  console.log("clicked");
+  const isCorrect = state.turnData.author.books.some(book => book === title);
+  state.highlight = isCorrect ? "Correct" : "Wrong";
+
+  //Render the QuiZComponent upon state change as we are not using lifecycle methods.
+  render();
+}
+
+function render() {
+  const rootElement = document.getElementById("root");
+  ReactDOM.render(
+    <QuizApp {...state} onAnswerSelected={onAnswerSelected} />,
+    rootElement
+  );
+}
+//For initial rendering.
+render();
