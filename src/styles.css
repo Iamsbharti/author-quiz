@@ -26,3 +26,7 @@
 div.answer:hover {
   background-color: rgb(164, 125, 216);
 }
+.row-continue {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}

@@ -2,15 +2,19 @@ import React from "react";
 import "../styles.css";
 import "../bootstrap.min.css";
 
-function Continue() {
+function Continue({ show, onContinue }) {
   return (
-    <div id="footer" className="row">
-      <div className="col-12">
-        <p className="text-muted credit">
-          All Informations are from{" "}
-          <a href="https://www.goodreads.com/">GoodReads</a>
-        </p>
-      </div>
+    <div className="row-continue">
+      {show ? (
+        <div className="col-11">
+          <button
+            className="btn btn-primary btm-lg float-right"
+            onClick={onContinue}
+          >
+            Continue
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

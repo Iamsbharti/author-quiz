@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import QuizApp from "./QuizApp";
 import authors from "./Data/authors";
 import { shuffle, sample } from "underscore";
+import { BrowserRouter, Route, withRouter } from "react-router-dom";
+import AddAuthorForm from "./Components/AddAuthorForm";
 
 function getTurnData(authors) {
   const allBooks = authors.reduce(function(p, c, i) {
@@ -21,10 +23,13 @@ function getTurnData(authors) {
   };
 }
 //Intialize the state.
-const state = {
-  turnData: getTurnData(authors),
-  highlight: ""
-};
+function resetState() {
+  return {
+    turnData: getTurnData(authors),
+    highlight: ""
+  };
+}
+let state = resetState();
 
 //This method computes the correct answer upon OncLick Event.
 function onAnswerSelected(title) {
@@ -35,11 +40,43 @@ function onAnswerSelected(title) {
   //Render the QuiZComponent upon state change as we are not using lifecycle methods.
   render();
 }
-
+function App() {
+  return (
+    <QuizApp
+      {...state}
+      onAnswerSelected={onAnswerSelected}
+      onContinue={() => {
+        state = resetState();
+        render();
+      }}
+    />
+  );
+}
+//Pushing the new item to the array and reqouting the use to App Component.
+const AddAuthorWrapper = withRouter(({ history }) => (
+  <AddAuthorForm
+    onAuthorSubmit={author => {
+      authors.push(author);
+      history.push("/");
+    }}
+  />
+));
+function RoterComponents() {
+  return (
+    <BrowserRouter>
+      <React.Fragment>
+        <Route exact path="/" component={App} />
+        <Route path="/add" component={AddAuthorWrapper} />
+      </React.Fragment>
+    </BrowserRouter>
+  );
+}
 function render() {
   const rootElement = document.getElementById("root");
   ReactDOM.render(
-    <QuizApp {...state} onAnswerSelected={onAnswerSelected} />,
+    <>
+      <RoterComponents />
+    </>,
     rootElement
   );
 }
